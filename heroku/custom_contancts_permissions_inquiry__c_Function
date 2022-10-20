@@ -1,0 +1,49 @@
+CREATE OR REPLACE FUNCTION public."custom_contancts_permissions_inquiry__c_Function"()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+			trigger_row "salesforce"."inquiry__c";
+        BEGIN
+            
+            IF (TG_OP = 'DELETE') THEN
+                DELETE FROM "salesforce"."inquiry__c" WHERE id__c = Text(old.id);
+            ELSEIF (TG_OP = 'INSERT') THEN
+				trigger_row = ROW();
+				trigger_row."siteclassification__c" = new."SiteClassification";
+				trigger_row."datakind__c" = new."DataKind";
+				trigger_row."inquirytype__c" = new."InquiryType";
+				trigger_row."inquirycompany__c" = new."InquiryCompany";
+				trigger_row."contentofinquiry__c" = new."ContentOfInquiry";
+				trigger_row."companyname__c" = new."CompanyName";
+				trigger_row."departmentname__c" = new."DepartmentName";
+				trigger_row."lastname__c" = new."Name";
+				trigger_row."firstname__c" = new."FirstName";
+				trigger_row."countryofresidence__c" = new."CountryOfResidence";
+				trigger_row."mailadress__c" = new."MailAdress";
+				trigger_row."tel__c" = new."Tel";
+				trigger_row."id__c" = new."id";
+				trigger_row."id" = nextval('"salesforce"."inquiry__c_id_seq"');
+
+                INSERT INTO "salesforce"."inquiry__c" VALUES (trigger_row.*);
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                UPDATE "salesforce"."inquiry__c" set 
+					siteclassification__c = new."SiteClassification",
+					datakind__c = new."DataKind",
+					inquirytype__c = new."InquiryType",
+					inquirycompany__c = new."InquiryCompany",
+					contentofinquiry__c = new."ContentOfInquiry",
+					companyname__c = new."CompanyName",
+					departmentname__c = new."DepartmentName",
+					lastname__c = new."Name",
+					firstname__c = new."FirstName",
+					countryofresidence__c = new."CountryOfResidence",
+					mailadress__c = new."MailAdress",
+					tel__c = new."Tel"
+				WHERE id__c = Text(new."id");
+            END IF;
+
+            RETURN NULL;
+        END;
+$function$
+;

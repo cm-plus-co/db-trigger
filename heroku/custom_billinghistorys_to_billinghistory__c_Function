@@ -1,0 +1,40 @@
+CREATE OR REPLACE FUNCTION public."custom_billinghistorys_to_billinghistorys__c_Function"()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+			trigger_row "salesforce"."billinghistory__c";
+        BEGIN
+            
+            IF (TG_OP = 'DELETE') THEN
+                DELETE FROM "salesforce"."billinghistory__c" WHERE id__c = Text(old.id);
+            ELSEIF  (TG_OP = 'INSERT') THEN
+				trigger_row = ROW();
+				trigger_row."userid__c" = new."UserID";
+				trigger_row."companyid__c" = new."CompanyId";
+				trigger_row."productcategory__c" = new."ProductCategory";
+				trigger_row."billingdatetime__c" = new."BillingDateTime";
+				trigger_row."billingamount__c" = new."BillingAmount";
+				trigger_row."languagetype__c" = new."LanguageType";
+				trigger_row."kind__c" = new."Kind";
+				trigger_row."id__c" = new."id";
+				trigger_row."name" = 'Heroku連携';
+				trigger_row."id" = nextval('"salesforce"."billinghistory__c_id_seq"');
+
+                INSERT INTO "salesforce"."billinghistory__c" VALUES (trigger_row.*);
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                UPDATE "salesforce"."billinghistory__c" set 
+					userid__c = new."UserID",
+					companyid__c = new."CompanyId",
+					productcategory__c = new."ProductCategory",
+					billingdatetime__c = new."BillingDateTime",
+					billingamount__c = new."BillingAmount",
+					languagetype__c = new."LanguageType",
+					kind__c = new."Kind"
+				WHERE id__c = Text(new."id");
+            END IF;
+
+            RETURN NULL;
+        END;
+$function$
+;

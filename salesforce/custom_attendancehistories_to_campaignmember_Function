@@ -1,0 +1,53 @@
+CREATE OR REPLACE FUNCTION salesforce."custom_attendancehistories_to_campaignmember_Function"()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+			trigger_row "public"."attendance_histories";
+        BEGIN
+            
+            IF (TG_OP = 'DELETE') THEN
+                DELETE FROM "public"."attendance_histories" WHERE id__c = Text(old.id);
+            ELSEIF (TG_OP = 'INSERT') THEN
+				trigger_row = ROW();
+				trigger_row."UserID" = new."userid__c";
+				trigger_row."SeminarId" = new."seminarid__c";
+				trigger_row."ELearningId" = new."elearningid__c";
+				trigger_row."StudentsDate" = new."studentsdate__c";
+				trigger_row."CompanyName" = new."companyoraccount";
+				trigger_row."DepartmentName" = new."departmentname__c";
+				trigger_row."Name" = new."name__c";
+				trigger_row."Furigana" = new."furigana__c";
+				trigger_row."PostalCode" = new."postalcode";
+				trigger_row."CityTownName" = new."citytownname__c";
+				trigger_row."AddressBuildingName" = new."addressbuildingname__c";
+				trigger_row."Tel" = new."phone";
+				trigger_row."MailAdress" = new."email";
+				trigger_row."ContentOfInquiry" = new."contentofinquiry__c";
+				trigger_row."id__c" = new."id";
+				trigger_row."id" = nextval('"public"."attendance_histories_id_seq"');
+
+                INSERT INTO "public"."attendance_histories" VALUES (trigger_row.*);
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                UPDATE "public"."attendance_histories" set 
+					"UserID" = new."userid__c",
+					"SeminarId" = new."seminarid__c",
+					"ELearningId" = new."elearningid__c",
+					"StudentsDate" = new."studentsdate__c",
+					"CompanyName" = new."companyoraccount",
+					"DepartmentName" = new."departmentname__c",
+					"Name" = new."name__c",
+					"Furigana" = new."furigana__c",
+					"PostalCode" = new."postalcode",
+					"CityTownName" = new."citytownname__c",
+					"AddressBuildingName" = new."addressbuildingname__c",
+					"Tel" = new."phone",
+					"MailAdress" = new."email",
+					"ContentOfInquiry" = new."contentofinquiry__c"
+				WHERE id__c = Text(new."id");
+            END IF;
+
+            RETURN NULL;
+        END;
+$function$
+;

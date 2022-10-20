@@ -1,0 +1,140 @@
+CREATE OR REPLACE FUNCTION public."custom_purchasehistorys_to_gmpshop_order__c_Function"()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+			trigger_row "salesforce"."gmpshop_order__c";
+        BEGIN
+            
+            IF (TG_OP = 'DELETE' AND old."InvoiceAddress" !~~ 'LSMIP%') THEN
+                DELETE FROM "salesforce"."gmpshop_order__c" WHERE id__c = Text(old.id);
+            ELSEIF (TG_OP = 'INSERT' AND new."InvoiceAddress" !~~ 'LSMIP%') THEN
+				trigger_row = ROW();
+				trigger_row."userid__c" = new."UserId";
+				trigger_row."seminarpurchase__c" = new."Seminar";
+				trigger_row."displaylanguage__c" = new."DisplayLanguage";
+				trigger_row."purchasedate__c" = new."PurchaseDate";
+				trigger_row."companyname__c" = new."CompanyName";
+				trigger_row."companynamekana__c" = new."CompanyNameKana";
+				trigger_row."departmentname__c" = new."DepartmentName";
+				trigger_row."jobtitle__c" = new."JobTitle";
+				trigger_row."name" = 'Heroku連携';
+				trigger_row."username__c" = new."Username";
+				trigger_row."firstname__c" = new."FirstName";
+				trigger_row."lastnamekana__c" = new."UsernameKana";
+				trigger_row."firstnamekana__c" = new."FirstNameKana";
+				trigger_row."postalcode__c" = new."PostalCode";
+				trigger_row."prefectures__c" = new."Prefectures";
+				trigger_row."citytownname__c" = new."CityTownName";
+				trigger_row."addressbuildingname__c" = new."AddressBuildingName";
+				trigger_row."tel__c" = new."Tel";
+				trigger_row."mailadress__c" = new."MailAdress";
+				trigger_row."total__c" = new."Total";
+				trigger_row."attendance__c" = new."Attendance";
+				trigger_row."textdestination__c" = new."TextDestination";
+				trigger_row."departmentnametwo__c" = new."DepartmentNameTwo";
+				trigger_row."usernametwo__c" = new."usernameTwo";
+				trigger_row."firstnametwo__c" = new."FirstNameTwo";
+				trigger_row."lastnamekanatwo__c" = new."LastNameKanaTwo";
+				trigger_row."firstnamekanatwo__c" = new."FirstNameKanaTwo";
+				trigger_row."mailadresstwo__c" = new."MailAdressTwo";
+				trigger_row."attendancetwo__c" = new."AttendanceTwo";
+				trigger_row."textdestinationtwo__c" = new."TextDestinationTwo";
+				trigger_row."departmentnamethree__c" = new."DepartmentNameThree";
+				trigger_row."usernamethree__c" = new."usernameThree";
+				trigger_row."firstnamethree__c" = new."FirstNameThree";
+				trigger_row."lastnamekanathree__c" = new."LastNameKanaThree";
+				trigger_row."firstnamekanathree__c" = new."FirstNameKanaThree";
+				trigger_row."mailadressthree__c" = new."MailAdressThree";
+				trigger_row."attendancethree__c" = new."AttendanceThree";
+				trigger_row."textdestinationthree__c" = new."TextDestinationThree";
+				trigger_row."courseinformation__c" = new."CourseInformation";
+				trigger_row."paymentmethod__c" = new."PaymentMethod";
+				trigger_row."invoiceaddress__c" = new."InvoiceAddress";
+				trigger_row."information__c" = new."Information";
+				trigger_row."trigger1__c" = new."Trigger1";
+				trigger_row."trigger2__c" = new."Trigger2";
+				trigger_row."trigger3__c" = new."Trigger3";
+				trigger_row."trigger4__c" = new."Trigger4";
+				trigger_row."trigger5__c" = new."Trigger5";
+				trigger_row."trigger6__c" = new."Trigger6";
+				trigger_row."trigger7__c" = new."Trigger7";
+				trigger_row."other__c" = new."Other";
+				trigger_row."orderingparty__c" = new."OrderingParty";
+				trigger_row."questionnaire1__c" = new."questionnaire1";
+				trigger_row."questionnaire2__c" = new."questionnaire2";
+				trigger_row."questionnaire3__c" = new."questionnaire3";
+				trigger_row."questionnaire4__c" = new."questionnaire4";
+				trigger_row."bookformat__c" = new."BookFormat";
+				trigger_row."opinionsandrequests__c" = new."OpinionsAndRequests";
+				trigger_row."id__c" = new."id";
+				trigger_row."id" = nextval('"salesforce"."gmpshop_order__c_id_seq"');
+
+                INSERT INTO "salesforce"."gmpshop_order__c" VALUES (trigger_row.*);
+            ELSEIF (TG_OP = 'UPDATE' AND new."InvoiceAddress" !~~ 'LSMIP%') THEN
+                UPDATE "salesforce"."gmpshop_order__c" set 
+					userid__c = new."UserId",
+					seminarpurchase__c = new."Seminar",
+					displaylanguage__c = new."DisplayLanguage",
+					purchasedate__c = new."PurchaseDate",
+					companyname__c = new."CompanyName",
+					companynamekana__c = new."CompanyNameKana",
+					departmentname__c = new."DepartmentName",
+					jobtitle__c = new."JobTitle",
+					username__c = new."Username",
+					firstname__c = new."FirstName",
+					lastnamekana__c = new."UsernameKana",
+					firstnamekana__c = new."FirstNameKana",
+					postalcode__c = new."PostalCode",
+					prefectures__c = new."Prefectures",
+					citytownname__c = new."CityTownName",
+					addressbuildingname__c = new."AddressBuildingName",
+					tel__c = new."Tel",
+					mailadress__c = new."MailAdress",
+					total__c = new."Total",
+					attendance__c = new."Attendance",
+					textdestination__c = new."TextDestination",
+					departmentnametwo__c = new."DepartmentNameTwo",
+					usernametwo__c = new."usernameTwo",
+					firstnametwo__c = new."FirstNameTwo",
+					lastnamekanatwo__c = new."LastNameKanaTwo",
+					firstnamekanatwo__c = new."FirstNameKanaTwo",
+					mailadresstwo__c = new."MailAdressTwo",
+					attendancetwo__c = new."AttendanceTwo",
+					textdestinationtwo__c = new."TextDestinationTwo",
+					departmentnamethree__c = new."DepartmentNameThree",
+					usernamethree__c = new."usernameThree",
+					firstnamethree__c = new."FirstNameThree",
+					lastnamekanathree__c = new."LastNameKanaThree",
+					firstnamekanathree__c = new."FirstNameKanaThree",
+					mailadressthree__c = new."MailAdressThree",
+					attendancethree__c = new."AttendanceThree",
+					textdestinationthree__c = new."TextDestinationThree",
+					courseinformation__c = new."CourseInformation",
+					paymentmethod__c = new."PaymentMethod",
+					invoiceaddress__c = new."InvoiceAddress",
+					information__c = new."Information",
+					trigger1__c = new."Trigger1",
+					trigger2__c = new."Trigger2",
+					trigger3__c = new."Trigger3",
+					trigger4__c = new."Trigger4",
+					trigger5__c = new."Trigger5",
+					trigger6__c = new."Trigger6",
+					trigger7__c = new."Trigger7",
+					other__c = new."Other",
+					orderingparty__c = new."OrderingParty",
+					questionnaire1__c = new."questionnaire1",
+					questionnaire2__c = new."questionnaire2",
+					questionnaire3__c = new."questionnaire3",
+					questionnaire4__c = new."questionnaire4",
+					bookformat__c = new."BookFormat",
+					opinionsandrequests__c = new."OpinionsAndRequests"
+
+				WHERE id__c = Text(new."id");
+	
+            END IF;
+
+            RETURN NULL;
+        END;
+$function$
+;
