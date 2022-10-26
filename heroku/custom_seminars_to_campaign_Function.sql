@@ -38,7 +38,7 @@ DECLARE
 				/*trigger_row."seminaritemen__c" = new."SeminarItemEn";*/
 				/*trigger_row."languagetype__c" = new."LanguageType";*/
 				/*trigger_row."displayonoff__c" = new."DisplayOnOff";*/
-				trigger_row."metatitle__c" = new."MetaTitle";
+				trigger_row."metatitle__c" = new."meta_title";
 				/*trigger_row."accessrestrictions__c" = new."AccessRestrictions";*/
 				/*trigger_row."pickup__c" = new."PickUp";*/
 				/*trigger_row."metakeyword__c" = new."MetaKeyword";*/
@@ -48,9 +48,9 @@ DECLARE
 				/*trigger_row."applicationnotes__c" = new."ApplicationNotes";*/
 				/*trigger_row."applicationnotesen__c" = new."ApplicationNotesEn";*/
 				/*trigger_row."trainingprogramflag__c" = new."TrainingProgramFlag";*/
-				trigger_row."end_date__c" = new."Campaign";
-				trigger_row."holding_period__c" = new."DisplayDateTime";
-				trigger_row."productname__c" = new."ProductName";
+				trigger_row."end_date__c" = new."campaign";
+				trigger_row."holding_period__c" = new."display_date_time";
+				-- trigger_row."productname__c" = new."ProductName";
 				/*trigger_row."strapientryname__c" = new."StrapiEntryName";*/
 				trigger_row."id__c" = new."id";
 				trigger_row."id" = nextval('"salesforce"."campaign_id_seq"');
@@ -77,9 +77,9 @@ DECLARE
 					/*metadiscription__c = new."MetaDiscription",*/
 					/*speaker__c = new."Speaker",*/
 					/*speakeren__c = new."SpeakerEn",*/
-					startdate = new."HeldDateTime",
-					end_date__c = new."Campaign",
-					holding_period__c = new."DisplayDateTime",
+					startdate = new."held_date_time",
+					end_date__c = new."campaign",
+					holding_period__c = new."display_date_time",
 					/*helddatetimeen__c = new."HeldDateTimeEn",*/
 					/*resume__c = new."Resume",*/
 					/*resumeen__c = new."ResumeEn",*/
@@ -87,7 +87,7 @@ DECLARE
 					/*seminaritemen__c = new."SeminarItemEn",*/
 					/*languagetype__c = new."LanguageType",*/
 					/*displayonoff__c = new."DisplayOnOff",*/
-					metatitle__c = new."MetaTitle",
+					metatitle__c = new."meta_title",
 					/*accessrestrictions__c = new."AccessRestrictions",*/
 					/*pickup__c = new."PickUp",*/
 					/*metakeyword__c = new."MetaKeyword",*/
@@ -97,7 +97,7 @@ DECLARE
 					/*applicationnotes__c = new."ApplicationNotes",*/
 					/*applicationnotesen__c = new."ApplicationNotesEn",*/
 					/*trainingprogramflag__c = new."TrainingProgramFlag"*/
-					productname__c = new."ProductName"
+					-- productname__c = new."ProductName"
 					/*strapientryname__c = new."StrapiEntryName"*/
 				WHERE id__c = Text(new."id");
 	

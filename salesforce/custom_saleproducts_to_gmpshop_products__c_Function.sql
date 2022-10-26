@@ -10,24 +10,24 @@ DECLARE
                 DELETE FROM "public"."sale_products" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
 				trigger_row = ROW();
-				trigger_row."ProductKind" = new."product_category__c";
-				trigger_row."ProductName" = new."product_name__c";
-				trigger_row."ProductNameEn" = new."productnameen__c";
-				trigger_row."ListPrice" = new."list_price_heroku__c";
-				trigger_row."Currency" = new."currency__c";
-				trigger_row."ConsumptionTax" = new."consumptiontax__c";
+				trigger_row."product_kind" = new."product_category__c";
+				trigger_row."product_name" = new."product_name__c";
+				trigger_row."product_name_en" = new."productnameen__c";
+				trigger_row."list_price" = new."list_price_heroku__c";
+				trigger_row."currency" = new."currency__c";
+				trigger_row."consumption_tax" = new."consumptiontax__c";
 				trigger_row."id__c" = new."id";
 				trigger_row."id" = nextval('"public"."sale_products_id_seq"');
 
                 INSERT INTO "public"."sale_products" VALUES (trigger_row.*);
             ELSEIF (TG_OP = 'UPDATE') THEN
                 UPDATE "public"."sale_products" set
-					"ProductKind" = new."product_category__c",
-					"ProductName" = new."product_name__c",
-                    "ProductNameEn" = new."productnameen__c",
-					"ListPrice" = new."list_price_heroku__c",
-                    "Currency" = new."currency__c",
-                    "ConsumptionTax" = new."consumptiontax__c"
+					"product_kind" = new."product_category__c",
+					"product_name" = new."product_name__c",
+                    "product_name_en" = new."productnameen__c",
+					"list_price" = new."list_price_heroku__c",
+                    "currency" = new."currency__c",
+                    "consumption_tax" = new."consumptiontax__c"
                 WHERE id__c = Text(new."id");
             END IF;
 
