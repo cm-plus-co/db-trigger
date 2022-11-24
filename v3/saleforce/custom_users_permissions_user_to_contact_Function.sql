@@ -10,44 +10,7 @@ DECLARE
                 DELETE FROM "public"."users-permissions_user" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
 				if exists(select 1 from "public"."users-permissions_user" where (id__c is null or id__c = '')  and email=new."email") then
-					UPDATE "public"."users-permissions_user" set 
-						id__c=new."id",
-						"ReceiveFreeEmailMagazine" = new."receivefreeemailmagazine__c",
-						"NewSendMail" = new."newsendmail__c",
-						/*"Industry" = new."industry__c",*/
-						"Company" = new."company__c",
-						"SiteInfomation" = new."siteinfomation__c",
-						"email" = new."email",
-						"FirstName" = new."firstname",
-						-- "LastName" = new."lastname",
-						/*"Type" = new."type__c",*/
-						/*"Title" = new."title__c",*/
-						"RequestLSMIPMail" = new."requestlsmipmail__c",
-						"LastNameAlphabet" = new."lastnamealphabet__c",
-						"RequestiVEXLMail" = new."requestivexlmail__c",
-						"LanguageType" = new."languagetype__c",
-						"FirstNameAlphabet" = new."firstnamealphabet__c",
-						"RegisterURL" = new."registerurl__c",
-						"RegisteredSite" = new."registeredsite__c",
-						"RegisteredStatus" = new."registeredstatus__c",
-						"ResetPasswordUrl" = new."resetpasswordurl__c",
-						"RequestGMPPMail" = new."requestgmppmail__c",
-						"LastNameKana" = new."furigana_last_name__c",
-						"EmailMagazineLanguage" = new."emailmagazinelanguage__c",
-						"CompanyKana" = new."companykana__c",
-						"FirstNameKana" = new."furigana_first_name__c",
-						"WithdrawalFlag" = new."withdrawalflag__c",
-						"PurchasingNumber" = new."purchasingnumber__c",
-						"OldUserID" = new."olduserid__c",
-						"HerokuConnect" = new."herokuconnect__c",
-						"WithdrawalDate" = new."withdrawaldate__c",
-						"gmppTagRank1st" = new."gmpptagrank1st__c",
-						"gmppTagRank2nd" = new."gmpptagrank2nd__c",
-						"gmppTagRank3th" = new."gmpptagrank3th__c",
-						"lsmipTagRank1st" = new."lsmiptagrank1st__c",
-						"lsmipTagRank2nd" = new."lsmiptagrank2nd__c",
-						"lsmipTagRank3th" = new."lsmiptagrank3th__c"
-					WHERE (id__c is null or id__c = '') and email=new."email";
+					UPDATE "public"."users-permissions_user" set id__c=new."id"
 				else				
 					trigger_row = ROW();
 					trigger_row."ReceiveFreeEmailMagazine" = new."receivefreeemailmagazine__c";
