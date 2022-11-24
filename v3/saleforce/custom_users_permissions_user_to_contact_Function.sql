@@ -10,7 +10,7 @@ DECLARE
                 DELETE FROM "public"."users-permissions_user" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
 				if exists(select 1 from "public"."users-permissions_user" where (id__c is null or id__c = '')  and email=new."email") then
-					UPDATE "public"."users-permissions_user" set id__c=new."id"
+					UPDATE "public"."users-permissions_user" set id__c=new."id";
 				else				
 					trigger_row = ROW();
 					trigger_row."ReceiveFreeEmailMagazine" = new."receivefreeemailmagazine__c";
