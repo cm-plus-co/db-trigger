@@ -1,7 +1,13 @@
+-- FUNCTION: public.custom_users_permissions_user_to_contact_Function()
+
+-- DROP FUNCTION IF EXISTS public."custom_users_permissions_user_to_contact_Function"();
+
 CREATE OR REPLACE FUNCTION public."custom_users_permissions_user_to_contact_Function"()
- RETURNS trigger
- LANGUAGE plpgsql
-AS $function$
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
 DECLARE
 			trigger_row "salesforce"."contact";
         BEGIN
@@ -9,7 +15,7 @@ DECLARE
             IF (TG_OP = 'DELETE') THEN
                 DELETE FROM "salesforce"."contact" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
-				if exists(select 1 from "salesforce"."contact" where (id__c is null or id__c = '') and email=new."email") then
+				if exists(select 1 from "salesforce"."contact" where (id__c is null or id__c = '') and (email=new."email" or email_temp__c = new."email_temp")) then
 					UPDATE "salesforce"."contact" set 
 						id__c=new."id",
 						receivefreeemailmagazine__c = new."ReceiveFreeEmailMagazine",
@@ -18,6 +24,7 @@ DECLARE
 						company__c = new."Company",
 						siteinfomation__c = new."SiteInfomation",
 						email = new."email",
+						email_temp__c = new."email_temp",
 						firstname = new."FirstName",
 						lastname = coalesce(new."LastName", new."email"),
 						type__c = new."Type",
@@ -50,7 +57,7 @@ DECLARE
 						"lsmiptagrank1st__c" = new."lsmipTagRank1st",
 						"lsmiptagrank2nd__c" = new."lsmipTagRank2nd",
 						"lsmiptagrank3th__c" = new."lsmipTagRank3th"
-					where (id__c is null or id__c = '') and email=new."email";
+					where (id__c is null or id__c = '') and (email=new."email" or email_temp__c = new."email_temp");
 				else
 					trigger_row = ROW();
 					trigger_row."receivefreeemailmagazine__c" = new."ReceiveFreeEmailMagazine";
@@ -58,7 +65,8 @@ DECLARE
 					trigger_row."industry__c" = new."Industry";
 					trigger_row."company__c" = new."Company";
 					trigger_row."siteinfomation__c" = new."SiteInfomation";
-					trigger_row."email" = new."email"; 
+					--trigger_row."email" = new."email"; 
+					trigger_row."email_temp__c" = new."email_temp";
 					trigger_row."firstname" = new."FirstName";
 					trigger_row."lastname" = new."email";
 					trigger_row."type__c" = new."Type";
@@ -101,6 +109,7 @@ DECLARE
 					company__c = new."Company",
 					siteinfomation__c = new."SiteInfomation",
 					email = new."email",
+					email_temp__c = new."email_temp",
 					firstname = new."FirstName",
 					lastname = coalesce(new."LastName", new."email"),
 					type__c = new."Type",
@@ -139,4 +148,7 @@ DECLARE
 
             RETURN NULL;
         END;
-$function$;
+$BODY$;
+
+ALTER FUNCTION public."custom_users_permissions_user_to_contact_Function"()
+    OWNER TO postgres;

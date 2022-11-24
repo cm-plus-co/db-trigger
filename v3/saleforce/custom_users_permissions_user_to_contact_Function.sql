@@ -1,7 +1,13 @@
+-- FUNCTION: salesforce.custom_users_permissions_user_to_contact_Function()
+
+-- DROP FUNCTION IF EXISTS salesforce."custom_users_permissions_user_to_contact_Function"();
+
 CREATE OR REPLACE FUNCTION salesforce."custom_users_permissions_user_to_contact_Function"()
- RETURNS trigger
- LANGUAGE plpgsql
-AS $function$
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
 DECLARE
 			trigger_row "public"."users-permissions_user";
         BEGIN
@@ -9,8 +15,8 @@ DECLARE
             IF (TG_OP = 'DELETE') THEN
                 DELETE FROM "public"."users-permissions_user" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
-				if exists(select 1 from "public"."users-permissions_user" where (id__c is null or id__c = '')  and email=new."email") then
-					UPDATE "public"."users-permissions_user" set id__c=new."id";
+				if exists(select 1 from "public"."users-permissions_user" where (id__c is null or id__c = '')  and (email=new."email" or email_temp = new."email_temp__c")) then
+					UPDATE "public"."users-permissions_user" set id__c=new."id" where (id__c is null or id__c = '')  and (email=new."email" or email_temp = new."email_temp__c");
 				else				
 					trigger_row = ROW();
 					trigger_row."ReceiveFreeEmailMagazine" = new."receivefreeemailmagazine__c";
@@ -19,6 +25,7 @@ DECLARE
 					trigger_row."Company" = new."company__c";
 					trigger_row."SiteInfomation" = new."siteinfomation__c";
 					trigger_row."email" = new."email";
+					trigger_row."email_temp" = new."email_temp__c";
 					trigger_row."FirstName" = new."firstname";
 					-- trigger_row."LastName" = new."lastname";
 					/*trigger_row."Type" = new."type__c";*/
@@ -61,6 +68,7 @@ DECLARE
 					"Company" = new."company__c",
 					"SiteInfomation" = new."siteinfomation__c",
 					"email" = new."email",
+					"email_temp" = new."email_temp__c",
 					"FirstName" = new."firstname",
 					-- "LastName" = new."lastname",
 					/*"Type" = new."type__c",*/
@@ -98,6 +106,7 @@ DECLARE
 						(("Company" != new."company__c") or ("Company" is null and new."company__c" is not null)) or
 						(("SiteInfomation" != new."siteinfomation__c") or ("SiteInfomation" is null and new."siteinfomation__c" is not null)) or
 						(("email" != new."email") or ("email" is null and new."email" is not null)) or
+						(("email_temp" != new."email_temp__c") or ("email_temp" is null and new."email_temp__c" is not null)) or
 						(("FirstName" != new."firstname") or ("FirstName" is null and new."firstname" is not null)) or
 						-- (("LastName" != new."lastname" and new."lastname" is not null) or ("LastName" is null and new."lastname" is not null)) or
 						(("RequestLSMIPMail" != new."requestlsmipmail__c") or ("RequestLSMIPMail" is null and new."requestlsmipmail__c" is not null)) or
@@ -130,4 +139,7 @@ DECLARE
 
             RETURN NULL;
         END;
-$function$;
+$BODY$;
+
+ALTER FUNCTION salesforce."custom_users_permissions_user_to_contact_Function"()
+    OWNER TO postgres;
