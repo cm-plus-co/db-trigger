@@ -1,13 +1,7 @@
--- FUNCTION: salesforce.custom_users_permissions_user_to_contact_Function()
-
--- DROP FUNCTION IF EXISTS salesforce."custom_users_permissions_user_to_contact_Function"();
-
 CREATE OR REPLACE FUNCTION salesforce."custom_users_permissions_user_to_contact_Function"()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE NOT LEAKPROOF
-AS $BODY$
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
 			trigger_row "public"."users-permissions_user";
         BEGIN
@@ -145,7 +139,5 @@ DECLARE
 
             RETURN NULL;
         END;
-$BODY$;
-
-ALTER FUNCTION salesforce."custom_users_permissions_user_to_contact_Function"()
-    OWNER TO postgres;
+$function$
+;
