@@ -15,8 +15,14 @@ DECLARE
             IF (TG_OP = 'DELETE') THEN
                 DELETE FROM "public"."users-permissions_user" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
-				if exists(select 1 from "public"."users-permissions_user" where (id__c is null or id__c = '')  and (email=new."email" or email_temp = new."email_temp__c")) then
-					UPDATE "public"."users-permissions_user" set id__c=new."id" where (id__c is null or id__c = '')  and (email=new."email" or email_temp = new."email_temp__c");
+				if exists(select 1 from "public"."users-permissions_user" 
+					where (id__c is null or id__c = '') 
+					and ((email is not null and new."email" is not null and email=new."email") 
+						or (email_temp is not null and new."email_temp__c" is not null and email_temp = new."email_temp__c"))) then
+					UPDATE "public"."users-permissions_user" set id__c=new."id" 
+					where (id__c is null or id__c = '') 
+					and ((email is not null and new."email" is not null and email=new."email") 
+						or (email_temp is not null and new."email_temp__c" is not null and email_temp = new."email_temp__c"));
 				else				
 					trigger_row = ROW();
 					trigger_row."ReceiveFreeEmailMagazine" = new."receivefreeemailmagazine__c";

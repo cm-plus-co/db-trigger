@@ -15,49 +15,14 @@ DECLARE
             IF (TG_OP = 'DELETE') THEN
                 DELETE FROM "salesforce"."contact" WHERE id__c = Text(old.id);
             ELSEIF (TG_OP = 'INSERT') THEN
-				if exists(select 1 from "salesforce"."contact" where (id__c is null or id__c = '') and (email=new."email" or email_temp__c = new."email_temp")) then
-					UPDATE "salesforce"."contact" set 
-						id__c=new."id",
-						receivefreeemailmagazine__c = new."ReceiveFreeEmailMagazine",
-						newsendmail__c = new."NewSendMail",
-						industry__c = new."Industry",
-						company__c = new."Company",
-						siteinfomation__c = new."SiteInfomation",
-						email = new."email",
-						email_temp__c = new."email_temp",
-						firstname = new."FirstName",
-						lastname = coalesce(new."LastName", new."email"),
-						type__c = new."Type",
-						title__c = new."Title",
-						requestlsmipmail__c = new."RequestLSMIPMail",
-						lastnamealphabet__c = new."LastNameAlphabet",
-						requestivexlmail__c = new."RequestiVEXLMail",
-						languagetype__c = new."LanguageType",
-						firstnamealphabet__c = new."FirstNameAlphabet",
-						registerurl__c = new."RegisterURL",
-						registeredsite__c = new."RegisteredSite",
-						registeredstatus__c = new."RegisteredStatus",
-						resetpasswordurl__c = new."ResetPasswordUrl",
-						resetpassword__c = new."ResetPassword",
-						resetpassworddatetime__c = new."ResetPasswordDateTime",
-						memberrequestdatetime__c = new."MemberRequestDatetime",
-						requestgmppmail__c = new."RequestGMPPMail",
-						furigana_last_name__c = new."LastNameKana",
-						emailmagazinelanguage__c = new."EmailMagazineLanguage",
-						companykana__c = new."CompanyKana",
-						furigana_first_name__c = new."FirstNameKana",
-						withdrawalflag__c = new."WithdrawalFlag",
-						purchasingnumber__c = new."PurchasingNumber",
-						olduserid__c = new."OldUserID",
-						herokuconnect__c = new."HerokuConnect",
-						withdrawaldate__c = new."WithdrawalDate",
-						"gmpptagrank1st__c" = new."gmppTagRank1st",
-						"gmpptagrank2nd__c" = new."gmppTagRank2nd",
-						"gmpptagrank3th__c" = new."gmppTagRank3th",
-						"lsmiptagrank1st__c" = new."lsmipTagRank1st",
-						"lsmiptagrank2nd__c" = new."lsmipTagRank2nd",
-						"lsmiptagrank3th__c" = new."lsmipTagRank3th"
-					where (id__c is null or id__c = '') and (email=new."email" or email_temp__c = new."email_temp");
+				if exists(select 1 from "salesforce"."contact" 
+					where (id__c is null or id__c = '') 
+					and ((email is not null and new."email" is not null and email=new."email") 
+						or (email_temp__c is not null and new."email_temp" is not null and email_temp__c = new."email_temp"))) then
+					UPDATE "salesforce"."contact" set id__c=new."id"		
+					where (id__c is null or id__c = '') 
+					and ((email is not null and new."email" is not null and email=new."email") 
+						or (email_temp__c is not null and new."email_temp" is not null and email_temp__c = new."email_temp"));
 				else
 					trigger_row = ROW();
 					trigger_row."receivefreeemailmagazine__c" = new."ReceiveFreeEmailMagazine";
