@@ -27,7 +27,7 @@ DECLARE
 					--trigger_row."email" = new."email"; 
 					trigger_row."email_temp__c" = new."email_temp";
 					trigger_row."firstname" = new."FirstName";
-					trigger_row."lastname" = new."email";
+					trigger_row."lastname" = new."email_temp";
 					trigger_row."type__c" = new."Type";
 					trigger_row."title__c" = new."Title";
 					trigger_row."requestlsmipmail__c" = new."RequestLSMIPMail";
